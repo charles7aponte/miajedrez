@@ -146,7 +146,7 @@ include_once 'php/EjerciciosBase.php';
                  <ul class="list-group">
                      
                  <?php  for($i=0; $i< count($lista) ; $i++) { ?>    
-                    <li class="list-group-item lista_tema">
+                     <li class="list-group-item lista_tema" onclick="solicitarDatos(<?php echo $lista[$i]['id'] ?>)">
                       <span class="badge"><?php echo $lista[$i]['id'] ?></span>
                       tema :<?php echo $lista[$i]['tema'] ?>
                     </li>
