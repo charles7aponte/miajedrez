@@ -9,8 +9,8 @@ function Nodo(){
       
       
     this.idMiArray;// el id del array en el lista total
-    this.p1={from:'-', to:'-',promotion:'q'};
-    this.p2={from:'-', to:'-',promotion:'q'};
+    this.p1={from:'-', to:'-',promotion:'q',piece:''};
+    this.p2={from:'-', to:'-',promotion:'q',piece:''};
     this.array=[];
   
     

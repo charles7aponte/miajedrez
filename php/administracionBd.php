@@ -55,7 +55,10 @@
                          $nodo['pasos'],
                          $nodo['ayuda1'],
                          $nodo['promocion'],
-                         $nodo['fen']);
+                         $nodo['fen'],
+                         $nodo['piezas']
+                         
+                         );
             
                  
             }

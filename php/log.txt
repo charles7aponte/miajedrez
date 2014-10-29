@@ -1,3 +1,0 @@
-2014-03-15 : insert into ejercicio (objectivo, dificultad, tema, palabras, puntos, castigo
-           ,jugadores, torneo ,cantidad_jugadas,year )
-          values ('','','','','',''  ,'1','','2','')  

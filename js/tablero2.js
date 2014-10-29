@@ -33,10 +33,10 @@ function tablero2(datos){
        
         miId=datos.id;//ID DEL DOM
         if(datos.eventCoronacion)
-        {
-            callbackCoronacion=datos.eventCoronacion;
-            
-        }
+            {
+                callbackCoronacion=datos.eventCoronacion;
+
+            }
         }
     
     
@@ -86,8 +86,31 @@ function tablero2(datos){
                         return false;
                 }
             }
-            else
-            return false;
+            else{
+                
+             // se verifica si no ser el ultimo nodo de las lista de array a la qu pertenece. 
+             // por el contrario se debe a que necesita un nuevo paso  
+             
+             // el nodo actual esta al borde de su lista de array .. en caso de ser asi es un nuevo paso 
+             if(nodo && listaTotal[nodo.idMiArray] [listaTotal[nodo.idMiArray].length -1]==nodo)
+             {
+                 // se crea un nuevo paso automaticamente
+                 console.log("nuevo paso automaticamente ...");
+                 nuevoPaso(nodo.idMiArray, "nodo");
+                 
+             }else{
+                // se debe crear un variante automaticamente
+               console.log("se genera la nuevo paso  automaticamente ...");
+               nuevaVariante();
+            
+             }
+                
+                
+                
+                
+               // return false;
+               return true;
+            }
         };
 
 
@@ -190,7 +213,7 @@ function tablero2(datos){
                 var move = game.move({
                   from: source,
                   to: target,
-                  promotion: promocion // NOTE: always promote to a queen for example simplicity
+                    promotion: promocion // NOTE: always promote to a queen for example simplicity
                 });
 
 
@@ -205,11 +228,24 @@ function tablero2(datos){
                cambiaTurno();
 
 
+           
 
-               ultimoMoviento={from:source, to:target, promotion:promocion};
+
+               ultimoMoviento={from:source, to:target, promotion:promocion, piece:move.piece};
                banderaSiguiente=false;
            
           
+          
+               //se guarda la jugada de forma automatica
+               setTimeout(function(){
+                   
+                   
+                   guardaPaso();
+                   
+               },500);
+          
+          
+              
              return true;
          }
 
@@ -230,12 +266,14 @@ function tablero2(datos){
         var onMouseoverSquare = function(square, piece) {
          
             // get list of possible moves for this square
+            
+//            console.log(" mouse over square :: "+ square +" - > "+piece);
             var moves = game.moves({
               square: square,
               verbose: true
             });
             
-            console.info(moves);
+//            console.info(moves);
             
              // exit if there are no moves available for this square
             if (moves.length === 0) return;
@@ -360,7 +398,8 @@ function tablero2(datos){
         
         //mueve en formato algebraico
         //@param animar si se realiza o no animacion 
-        function mover_ficha(from, to,animar,mipromotion)
+        //@param moverTablero si es null se mueve de lo contrario no lo hara
+        function mover_ficha(from, to,animar,mipromotion , moverTablero)
         {
             
             if(animar)
@@ -369,16 +408,22 @@ function tablero2(datos){
             if(!mipromotion)
                 mipromotion='p';
             
-            console.error("from:"+from+" to:"+to+" promotion:"+mipromotion);
+//            console.error("from:"+from+" to:"+to+" promotion:"+mipromotion);
             
             
             game.move({from:from, to:to,  promotion:mipromotion});
-            var mifen=game.fen().split(" ");
-            board.position(mifen[0],animar);
             
+            var mifen=game.fen().split(" ");
+            
+            if(moverTablero==null)
+            {   
+                board.position(mifen[0],animar);
+             }
             
             cambiaTurno();
             
+            console.log(mifen);
+            return mifen;
         }
         this.moverFicha=mover_ficha;
         
@@ -429,12 +474,13 @@ function tablero2(datos){
         
         
         
-        //el fen que recibe debe ser completo
-        function cambiar_fen(fen)
+        //@param cambioVisual si es null o true cambio el tablero . de lo contrario el tablero no cambia pero internanmente si 
+        function cambiar_fen(fen, cambioVisual)
         {
            var mifen=fen;
-                    
-            board.position(mifen);
+            
+            if(cambioVisual==null || cambioVisual == true)
+                board.position(mifen);
             
             game = new Chess();
             game.load(mifen);
@@ -464,9 +510,9 @@ function tablero2(datos){
             board.position(game.fen(),false);
             
             
-              console.info("actualiza_ultima_coronacion----->");
-             console.info(ulimo_moviento_coronacion);
-               console.info(ultimo_moviento_coronacion_fen);
+//              console.info("actualiza_ultima_coronacion----->");
+//             console.info(ulimo_moviento_coronacion);
+//               console.info(ultimo_moviento_coronacion_fen);
            }
            
             

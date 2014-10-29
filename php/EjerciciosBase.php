@@ -1,5 +1,5 @@
 <?php
-require_once './ConectarBD.php';
+require_once 'ConectarBD.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -30,18 +30,20 @@ class EjerciciosBase {
            $objetivo,$puntos,$castigo
            ,$jugadores,$torneo,$cantidad_jugadas)
    {
-   $id="no";    
+       $id="no";    
        
-       $base= new ConectarBD();
-       $sql="insert into ejercicio (objectivo, dificultad, tema, palabras, puntos, castigo
-           ,jugadores, torneo ,cantidad_jugadas,year )
+       $base= new ConectarBD(); 
+       $sql="insert into ejercicio (objetivo, dificultad, tema, palabras, puntos, castigo
+           ,jugadores, torneo ,cantidad_jugadas, year ) 
           values ('{$objetivo}','{$dificultad}','{$tema}','{$palabras}','{$puntos}','{$castigo}' "
           . " ,'{$jugadores}','{$torneo}','{$cantidad_jugadas}','{$year}') ";
+       
        $base->consultaSQL($sql);
-       
-       
+             
        $id=$base->_ultimoID;
        
+       
+ 
        
       if($base->Error!="")
       {
@@ -65,11 +67,11 @@ class EjerciciosBase {
     * @param String $ayuda
     * @param String $fen
     */
-   public function pasos($id_ejercicio,$posicion_nodo_padre, $profundidad, $id_padre, $id_cadena,$pasos, $ayuda,$promocion, $fen)
+   public function pasos($id_ejercicio,$posicion_nodo_padre, $profundidad, $id_padre, $id_cadena,$pasos, $ayuda,$promocion, $fen,$piezas)
    { 
        $base=new ConectarBD();
-       $sql="insert into pasos (id_ejercicio,posicion_nodo_padre ,profundidad, id_padre_nodo, id_cadena, pasos, ayuda1,promocion, fen) 
-          values ('{$id_ejercicio}','{$posicion_nodo_padre}','{$profundidad}','{$id_padre}','{$id_cadena}','{$pasos}','{$ayuda}','{$promocion}','{$fen}' ) ";
+       $sql="insert into pasos (id_ejercicio,posicion_nodo_padre ,profundidad, id_padre_nodo, id_cadena, pasos, ayuda1,promocion, fen, piesas) 
+          values ('{$id_ejercicio}','{$posicion_nodo_padre}','{$profundidad}','{$id_padre}','{$id_cadena}','{$pasos}','{$ayuda}','{$promocion}','{$fen}','{$piezas}' ) ";
       $base->consultaSQL($sql);
       
       if($base->Error!="")
@@ -101,6 +103,7 @@ class EjerciciosBase {
                  ,pasos as pasos
                  ,promocion as promocion
                   ,fen as fen
+                  , piesas as piezas
           FROM pasos
          where id_ejercicio='{$id_ejercicio}'";
          
@@ -142,6 +145,30 @@ class EjerciciosBase {
       
   }
   
+  
+  
+  /***
+   * los datos generales de la partida .
+   * @param {int} $id_ejercicio  id_ejercicio para traer los pasos que le corresponde
+   * @return array de los datos de la base   
+   */
+  
+  public function getAllEjercicios(){
+     $base=new ConectarBD();
+     $sql="SELECT * FROM ejercicio";
+         
+      $base->consultaSQL($sql);
+      
+      if($base->Error!="")
+      {
+          $fecha=  date("Y-m-d");
+          $base->guardarArchivo3 ("$fecha : $sql \n", "a","logConsulta.txt");
+      }  
+     
+      
+      return $base->_datosRegistros;
+      
+  }
   
   
 }

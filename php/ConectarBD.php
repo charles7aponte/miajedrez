@@ -4,8 +4,8 @@
 		
                 var $_servidor="localhost";
 		var $_usuario="root";
-		var $_pass="12345";
-		var $_bd="ajedrez";
+		var $_pass="";
+		var $_bd="miajedrez";
 
                 
                 

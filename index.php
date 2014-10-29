@@ -88,7 +88,7 @@ and open the template in the editor.
         <div class=" col-md-2 col-sm-3 sidebar" id="mi_barra_izq_lat">
             <ul class="nav nav-sidebar" id="mi_barra_izq_lat_box">
                 <li class="dropdown-submenu"> 
-                    <a href="#"><i class="fa fa-list fa-lg"></i>
+                    <a href="lista.php"><i class="fa fa-list fa-lg"></i>
                         <span><font><font>Listas</font></font></span></a>
                              <ul class="dropdown-menu"> 
                                  <li><a href="list.html"><font><font>Cite los grupos</font></font></a></li> 
@@ -317,7 +317,13 @@ and open the template in the editor.
                              <hr>
                              paso final <br>
                              <input type="button" id="guardar_ejercicio" value="guardar ejercicio">
-
+                                
+                             
+                             <hr>
+                             Refrescar <br>
+                             <button type="button" class="btn btn-default btn-lg" onclick="location.reload();">
+                                <span class="glyphicon glyphicon-repeat"></span> 
+                              </button>
 
                          
                          <div id="rama"></div> 
@@ -326,8 +332,7 @@ and open the template in the editor.
                      
                 
                
-                     
-                   
+                    
                 <div class="panel-footer" style="background-color: #357ebd">
                        <div class="btn-group">
                            <button type="button" class="btn btn-default btn-lg" id="paso3_bton_anterior" data-bonmenu2="2"
@@ -461,17 +466,19 @@ and open the template in the editor.
        
         
         
-          var tableroPiezas=null;
+     var tableroPiezas=null;
     
-    var optioTableroPiezas={
+     var optioTableroPiezas={
           draggable: true,
           sparePieces:true,
          
         onDragStart : function(source, piece, position, orientation) {
          
+         
+         
          //si vienen por fuera
             if(source=='spare')
-            {          var mifen=tableroPiezas.fen();
+            {       var mifen=tableroPiezas.fen();
                     var tipo=piece[0];
                     var pieza=piece[1];
                     var cantidadMaximaPermitidas=cantidadMaximaPieza(pieza);

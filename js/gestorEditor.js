@@ -99,21 +99,25 @@ function recorrer (lista,numeroPaso){
                  htmlIdMiArray=" data-idarray='"+lista[i].idMiArray+"' ";
              
              var miNodo=lista[i];
+             var piezaP1= (lista[i].p1.piece+"").toUpperCase() =="P"?"":lista[i].p1.piece;
+             var piezaP2= (lista[i].p2.piece+"").toUpperCase() =="P"?"":lista[i].p2.piece;
+             
+             
              
              if(miNodo==nodo)
              {
              
                 html+=" <li class='list-group-item' onContextMenu='return false;' style='color:#FF6A00'  id='seleccion_paso' "+htmlIdMiArray+" data-posicion_nodo='"+i+"'> "+numeroPaso+" . " ;
-                html+= "<b   ondblclick='eliminarPaso()' onclick='irNodo(this,1)' onContextMenu='mostrarMenu(this,1,event)' style='cursor:pointer' >"+  lista[i].p1.to+"</b> - ";
-                html+= "<b   ondblclick='eliminarPaso()' onclick='irNodo(this,2)' onContextMenu='mostrarMenu(this,2,event)' style='cursor:pointer' >"+ lista[i].p2.to+"</b> </li> " ;   
+                html+= "<b   onclick='irNodo(this,1)' onContextMenu='mostrarMenu(this,1,event)' style='cursor:pointer' >"+piezaP1+lista[i].p1.to+"</b> - ";
+                html+= "<b   onclick='irNodo(this,2)' onContextMenu='mostrarMenu(this,2,event)' style='cursor:pointer' >"+piezaP2+ lista[i].p2.to+"</b> </li> " ;   
                 
                 
              }
              else{
              
                 html+=" <li class='list-group-item' "+htmlIdMiArray+" data-posicion_nodo='"+i+"'> "+numeroPaso+" . "+ 
-                   "<b   ondblclick='eliminarPaso()' onclick='irNodo(this,1)'  onContextMenu='mostrarMenu(this,1,event)' style='cursor:pointer' >"+ lista[i].p1.to+"</b> - "+
-                   "<b   ondblclick='eliminarPaso()' onclick='irNodo(this,2)'  onContextMenu='mostrarMenu(this,2,event)' style='cursor:pointer' >"+ lista[i].p2.to+"</b> </li> " ;   
+                   "<b   onclick='irNodo(this,1)'  onContextMenu='mostrarMenu(this,1,event)' style='cursor:pointer' >"+piezaP1+ lista[i].p1.to+"</b> - "+
+                   "<b   onclick='irNodo(this,2)'  onContextMenu='mostrarMenu(this,2,event)' style='cursor:pointer' >"+piezaP2+ lista[i].p2.to+"</b> </li> " ;   
                 
              }
                  
@@ -156,7 +160,7 @@ function recorrer (lista,numeroPaso){
       if(nodo!=NodoPrincipal && !listaTotal && listaTotal.length==0)
       { 
          
-         console.info("error en listaTotal");   
+//         console.info("error en listaTotal");   
          return false;
       }
  
@@ -176,7 +180,7 @@ function recorrer (lista,numeroPaso){
         
         
     
-    console.log(arrayNodo);
+//    console.log(arrayNodo);
         //verifica que el array tiene datos
       if(arrayNodo.length>0 && nodo)
       {
@@ -191,7 +195,7 @@ function recorrer (lista,numeroPaso){
              {
                  if( arrayNodo[i]==nodo)
                  {
-                    console.log("se elmin el nodo ");
+//                    console.log("se elmin el nodo ");
                  
                     banderaHallo=true;
                  }
@@ -446,22 +450,23 @@ function actualizaTableroHasta(idArray,posicionNodo, pos){
 
            var miFen="";
            var miNodo=null;
+           var nuevoFen="";
 
-           console.log("");
-            console.log(listaTotal[idArray]);
+           //console.log("");
+            //console.log(listaTotal[idArray]);
 
 
            if(listaTotal[idArray] &&  listaTotal[idArray][0])
            {
-                console.log("el  1");
+              //  console.log("el  1");
                miFen=listaTotal[idArray][0].fen;
 
            }
 
 
            console.log("el fen a cabiar er "+miFen);
-           mitablero2.cambiarFen(miFen);
-
+           mitablero2.cambiarFen(miFen, false);
+         
 
            for(var i=0;i<=posicionNodo && i<listaTotal[idArray].length; i++)
            {
@@ -471,19 +476,19 @@ function actualizaTableroHasta(idArray,posicionNodo, pos){
                {
                    if(posicionNodo!=i)// si no esl el ultmo moviento
                    {
-                    mitablero2.moverFicha(miNodo.p1.from, miNodo.p1.to, false,miNodo.promotion);
-                    mitablero2.moverFicha(miNodo.p2.from, miNodo.p2.to, false,miNodo.promotion);
+                    mitablero2.moverFicha(miNodo.p1.from, miNodo.p1.to, false,miNodo.promotion, false);
+                    mitablero2.moverFicha(miNodo.p2.from, miNodo.p2.to, false,miNodo.promotion, false);
                     
                     }
                     else{// el ultmo moviento valida si toka uno o los dos
                         if(pos==1)
                         {
-                         mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,true,miNodo.promotion);
+                         mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,true,miNodo.promotion, false);
                          ultimoOponente=1;
                         }
                         else{
-                         mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,false,miNodo.p1.promotion);
-                         mitablero2.moverFicha(miNodo.p2.from,miNodo.p2.to,true,miNodo.p2.promotion);
+                         mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,false,miNodo.p1.promotion, false);
+                        mitablero2.moverFicha(miNodo.p2.from,miNodo.p2.to,true,miNodo.p2.promotion, false);
                         
                             ultimoOponente=2;
                             }
@@ -495,11 +500,11 @@ function actualizaTableroHasta(idArray,posicionNodo, pos){
 
                    if(posicionNodo!=i)
                    { 
-                       mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,false,miNodo.p1.promotion);
+                       mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,false,miNodo.p1.promotion, false);
                    }
                    else // si es el ulimo moviento
                    {
-                     mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,true,miNodo.p1.promotion);  
+                       mitablero2.moverFicha(miNodo.p1.from,miNodo.p1.to,true,miNodo.p1.promotion, false);  
                    }
                    
                    ultimoOponente=1;
@@ -508,7 +513,17 @@ function actualizaTableroHasta(idArray,posicionNodo, pos){
 
 
            }//fin del for
-           
+          
+    
+    
+    // se actualiza el tablero visualmente 
+     var migame=mitablero2.getGame();
+     var fnAxiliar= migame.fen();
+
+     console.log(fnAxiliar);
+     mitablero2.cambiarFen(fnAxiliar, true);
+
+
     return miNodo;
     
 }
@@ -614,17 +629,23 @@ function libresMovientoPendientes(){
              miJson.fen= nodoAuxiliar.fen;
              miJson.idPadre= nodoAuxiliar.idArrayPadre;
              miJson.nivel= nodoAuxiliar.profundidad;
+             miJson.piezas="";
              
                 if(misBandos==3)
                 {
                     miJson.pasos+="{"+nodoAuxiliar.p1.from+","+nodoAuxiliar.p1.to+"}"
                                  +";{"+nodoAuxiliar.p2.from+","+nodoAuxiliar.p2.to+"}";
-                    miJson.promocion+= nodoAuxiliar.p1.promotion+","+nodoAuxiliar.p2.promotion;    
+                    miJson.promocion+= nodoAuxiliar.p1.promotion+","+nodoAuxiliar.p2.promotion;
+                    
+                    // moviento de las piezas
+                     miJson.piezas= miJson.piezas+""+nodoAuxiliar.p1.piece+","+nodoAuxiliar.p2.piece+""
+
                }
                 else{
                     miJson.pasos+="{"+nodoAuxiliar.p1.from+","+nodoAuxiliar.p1.to+"}";
                     
                    miJson.promocion+= nodoAuxiliar.p1.promotion;    
+                   miJson.piezas= miJson.piezas+nodoAuxiliar.p1.piece+"";
               
                }
                 
@@ -662,12 +683,16 @@ function libresMovientoPendientes(){
                                  +";{"+nodoAuxiliar.p2.from+","+nodoAuxiliar.p2.to+"}"; 
                     miJson.promocion+=","+nodoAuxiliar.p1.promotion+","+nodoAuxiliar.p2.promotion;    
                     
+                     // moviento de las piezas
+                     miJson.piezas+= ";"+nodoAuxiliar.p1.piece+","+nodoAuxiliar.p2.piece+""
+
                }
                 else{
                     miJson.pasos+=";{"+nodoAuxiliar.p1.from+","+nodoAuxiliar.p1.to+"}";
                     miJson.promocion+=","+nodoAuxiliar.p1.promotion;    
           
                
+                     miJson.piezas+=";"+nodoAuxiliar.p1.piece+"";
                }
                 
                 
@@ -705,7 +730,7 @@ function libresMovientoPendientes(){
         * @param {type} elemento
         * @returns {undefined}
         */
-       function nuevoPaso(elemento){
+       function nuevoPaso(elemento,tipo){
            
           //falta la validacion que el paso anterior este terminado
           
@@ -727,7 +752,16 @@ function libresMovientoPendientes(){
           
          if(seguir)
          { 
-            var idArray= $(elemento).attr('data-idarray');
+            var idArray="";
+            
+               if(tipo==null)
+               {
+                idArray= $(elemento).attr('data-idarray');
+                }
+                else{
+                    
+                 idArray =  elemento;  
+                }
             var posicionNodo=listaTotal[idArray].length-1;
             var oponenteFinal=''
             //se obtiene la poscion del nnodo 
@@ -746,9 +780,9 @@ function libresMovientoPendientes(){
             mitablero2.habilitaMoviento(true);
             listaTotal[idArray].push(nodo);
 
-
-            actualizaTableroHasta(idArray,posicionNodo,2);//debe mostrar el ultimo moviento    
-
+            if(tipo==null)
+            { actualizaTableroHasta(idArray,posicionNodo,2);//debe mostrar el ultimo moviento    
+            }  
             actualizaArbol();
 
          } 
@@ -776,12 +810,12 @@ function guardaPaso(){
                nodo.p1=mitablero2.getMoviento();
                controlGuardado++; 
                mitablero2.habilitaMoviento(true); 
-               console.error("contron gura =0 ");
+              // console.error("contron gura =0 ");
             }     
             else if(controlGuardado==1)
             { nodo.p2=mitablero2.getMoviento();
               controlGuardado++; 
-               console.error("contron gura =1 ");
+               //console.error("contron gura =1 ");
             }
                 else 
                 alert("hizo todos los movientos cree otro paso");
@@ -978,9 +1012,10 @@ function elegirPromotion(){
       * @param {type} pasos
       * @param {type} ayuda
       * @param {type} promocion
+      * @param {string} piezas 
       * @returns {undefined}
       */
-     function reconstruccionNodosPorArray(cantidad_jugadores, pasos, ayuda,promocion){
+     function reconstruccionNodosPorArray(cantidad_jugadores, pasos, ayuda,promocion, piezas){
          
          var misPasos= pasos.substring(1,pasos.length-1).split(";");
          var miAyuda=  ayuda.substring(1,ayuda.length-1).split(",");
@@ -988,23 +1023,44 @@ function elegirPromotion(){
          
          var arrayNodos=[];
          
-         var i=0;
-         
+        var i=0;
+        var pasosPieza=0;
+         var listaPiezas=(piezas+"").split(";");// se sepran la piezas movidas por pasos
+        
+        
          while( i< miPromocion.length)
          {
+             
+             
+            var AuxiliarPiezas = listaPiezas[pasosPieza];// se obtiene las piezas movidas por pasos .. son dos en caso de vs, o una en caso de un ejercicio de un solo jugador
+            var pasoAuxiliarDos= AuxiliarPiezas.split(",");
+            
              if(cantidad_jugadores==2)
              {
+                 
+                 
                var paso=eval(agregarComillasPasos(misPasos[i]+""));
                var miNodo= new Nodo();
+               
+                  
+                  
+               console.log("pasos .... ");
+               console.log(misPasos[i]);
+              
+              
                miNodo.p1.from= paso[0];
                miNodo.p1.to= paso[1];
-               miNodo.p1.promotion = miPromocion[i];
+               miNodo.p1.piece = pasoAuxiliarDos[0];
                
+               miNodo.p1.promotion = miPromocion[i];
+              
+                 
                i++;
                var paso=eval(agregarComillasPasos(misPasos[i]+""));
-               miNodo.p1.from= paso[0];
-               miNodo.p1.to= paso[1];
-               miNodo.p1.promotion = miPromocion[i];
+               miNodo.p2.from= paso[0];
+               miNodo.p2.to= paso[1];
+               miNodo.p2.promotion = miPromocion[i];
+               miNodo.p2.piece = pasoAuxiliarDos[1];
                
                miNodo.ayuda1 = miAyuda[i];
                 
@@ -1013,20 +1069,21 @@ function elegirPromotion(){
               i++;
              }
              else{
-               console.log("............ miNodo");
-               console.log("............ misPasos[i]"+misPasos[i]);
-              console.log("..."+agregarComillasPasos(misPasos[i]));
+            //  console.log("............ miNodo");
+            //      console.log("............ misPasos[i]"+misPasos[i]);
+            //      console.log("..."+agregarComillasPasos(misPasos[i]));
                  
                  
                var paso=eval(agregarComillasPasos(misPasos[i]));
                var miNodo= new Nodo();
                
-                console.log(paso);
+            //    console.log(paso);
                
                
                miNodo.p1.from= paso[0];
                miNodo.p1.to= paso[1];
                miNodo.p1.promotion = miPromocion[i];
+               miNodo.p1.piece = pasoAuxiliarDos[0];
                miNodo.ayuda1 = miAyuda[i];
                
                i++;
@@ -1035,6 +1092,8 @@ function elegirPromotion(){
                  
              }
              
+             
+             pasosPieza++;
          }//fin de while
        return arrayNodos;  
      }

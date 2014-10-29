@@ -80,6 +80,17 @@ function guardarDatosBasicosJuego(){
             }
             ,success: function(data,textStatus,jqXHR){
                     console.log(data);
+                    
+                    
+                    if(data && /[0-9]+/.test(data.id_ejercicio))
+                    {
+                        
+                        alert("la nueva partida ha sido guardada");
+                    }
+                    else
+                    {
+                        alert(":( error en la conexión");
+                    }
             }
         });
     
@@ -95,8 +106,8 @@ function guardarDatosBasicosJuego(){
  * soliicta los datos para formar los nodos
  * 
  */
-function solicitarDatos(){
-    var miId= $("#mi_id").val();
+function solicitarDatos(miId){
+    //var miId= $("#mi_id").val();
     
     
     $.ajax({
@@ -123,7 +134,7 @@ function solicitarDatos(){
 
                       NodoPrincipal.idMiArray="d"+idvariante;
 
-                      var general=data['general'];
+                      var general=data['general'][0];
                       var misPasos=data['pasos'];
                       
                       console.log(general);
@@ -138,9 +149,12 @@ function solicitarDatos(){
                                  general.jugadores
                                  ,misPasos[i].pasos
                                  ,misPasos[i].ayuda1
-                                 ,misPasos[i].promocion);   
-                                  console.log("...........");
-                            console.log(listaTotal[misPasos[i].id] );
+                                 ,misPasos[i].promocion
+                                 , misPasos[i].piezas
+                                );   
+                                 
+                            console.log("...........");
+                            console.log(listaTotal[misPasos[i].id]);
                          
 
                         }// fin del for 1
@@ -153,12 +167,12 @@ function solicitarDatos(){
                                 //si existe 
                                 if(listaTotal[misPasos[i].idPadre])
                                 {
-                                 nodoPadreSeleccionado = listaTotal[misPasos[i].idPadre][misPasos[i].posicion];   
+                                     nodoPadreSeleccionado = listaTotal[misPasos[i].idPadre][misPasos[i].posicion];   
                                 }
                                 else{
-                                    nodoPadreSeleccionado= NodoPrincipal;
+                                    nodoPadreSeleccionado = NodoPrincipal;
                                     NodoPrincipal.fen =   misPasos[i].fen;
-                                     NodoPrincipal.fen =   misPasos[i].fen;
+                                    NodoPrincipal.fen =   misPasos[i].fen;
                                 }
                                 
                                 
@@ -185,11 +199,8 @@ function solicitarDatos(){
                                  }
                                 nodoPadreSeleccionado.array.push(listaTotal[misPasos[i].id]);
                                 
-                                
-                                
-                                
-                                
                             }//finalizo de crear el arbol
+                            
                             
                             if(NodoPrincipal &&  NodoPrincipal.fen)
                             {
@@ -268,7 +279,13 @@ function saltaPaso(numeroPaso)
 
 
             case "2":
-
+                  var valor = $("#tema").val(); 
+                  if(valor=="")
+                  {
+                      
+                      alert("Por favor ingrese un valor en tema");
+                      return false;
+                  }
                
                 break;
 
